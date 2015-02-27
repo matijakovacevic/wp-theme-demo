@@ -181,7 +181,18 @@ add_action('save_post', 'save_post');
 
 // END: Add custom meta field (rating) to posts //
 
-
+/**
+ * Filter and order by custom field (post_rating)
+ */
+function filter_order_posts_by_rating( $query ) {
+    if ( $query->is_home() && $query->is_main_query() ) {
+        $query->set( 'posts_per_page', 5 );
+        $query->set( 'meta_key', 'post_rating' );
+        $query->set( 'orderby', 'post_rating' );
+        $query->set( 'order', 'DESC' );
+    }
+}
+add_action( 'pre_get_posts', 'filter_order_posts_by_rating' );
 
 
 /**
