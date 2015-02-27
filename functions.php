@@ -33,6 +33,13 @@ function demotheme_setup() {
 	// Add default posts and comments RSS feed links to head.
 	add_theme_support( 'automatic-feed-links' );
 
+    add_theme_support('post-thumbnails');
+
+    add_image_size('large', 700, '', true); // Large Thumbnail
+    add_image_size('medium', 250, '', true); // Medium Thumbnail
+    add_image_size('small', 120, '', true); // Small Thumbnail
+    add_image_size('custom-size', 700, 200, true); // Custom Thumbnail Size call using the_post_thumbnail('custom-size');
+
 	/*
 	 * Let WordPress manage the document title.
 	 * By adding theme support, we declare that this theme does not use a
@@ -111,6 +118,71 @@ function demotheme_scripts() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'demotheme_scripts' );
+
+
+
+/**
+ * Add custom meta field (rating) to posts
+ */
+function add_meta_boxes(){
+	// Add this metabox to every selected post
+    add_meta_box(
+        'rating_section',
+        'Rating for this post',
+        'add_inner_meta_boxes',
+        'post',
+        'side',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'add_meta_boxes');
+
+function add_inner_meta_boxes(){
+	global $post;
+
+	$post_meta = get_post_meta($post->ID, 'post_rating', true);
+	$rating = _e('Rating (1-5)', 'demoTheme');
+
+	echo <<<HTML
+<table>
+    <tr>
+        <th class="metabox_label_column">
+            <label for="post_rating">$rating</label>
+        </th>
+        <td>
+            <input type="text" id="post_rating" name="post_rating" value="$post_meta" />
+        </td>
+    </tr>
+</table>
+HTML;
+}
+
+function save_post($post_id){
+    if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+    {
+        return;
+    }
+
+    if(isset($_POST['post_type']) && $_POST['post_type'] == 'post' && current_user_can('edit_post', $post_id))
+    {
+    	// validate and sanitize
+    	$post_rating = (int) $_POST['post_rating'];
+    	$post_rating = ($post_rating < 1 || $post_rating > 5) ? 0 : $post_rating;
+
+        // Update the post's meta field
+        update_post_meta($post_id, 'post_rating', $post_rating);
+    }
+    else
+    {
+        return;
+    }
+}
+add_action('save_post', 'save_post');
+
+// END: Add custom meta field (rating) to posts //
+
+
+
 
 /**
  * Implement the Custom Header feature.
