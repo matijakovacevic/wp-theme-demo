@@ -1,6 +1,6 @@
 ###Wordpress Theme
 
-Create simple theme of only one page, which lists active posts (with navigation).
+Create simple theme of only one page, which lists active posts (with navigation/pagination).
 Item must contain post title and thumbnail.
 Sorting will be done by "rating" of the post in DESC order.
 Wordpress does not provide rating property by default, therefore it is needed
