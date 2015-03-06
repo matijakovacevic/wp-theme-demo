@@ -1,4 +1,8 @@
-Wordpress Thema
+###Wordpress Theme
 
-Potrebno kreirati jednostavnu "themu" od samo jedne stranice za ispis liste aktivnih postova sa paginacijom. Mora biti prikazan naziv i slika "thumbnail" posta. Sortiranje treba biti prema "ratingu" posta DESC.
-Kako Wordpress nema "rating" uobičajeno, potrebno je dodati "custom field" tako da svaki post unutar edita ima "input text" polje u koje će se unositi "rating" vrijednost (0-5).
+Create simple theme of only one page, which lists active posts (with navigation).
+Item must contain post title and thumbnail.
+Sorting will be done by "rating" of the post in DESC order.
+Wordpress does not provide rating property by default, therefore it is needed
+to add a custom field parameter so every post has an input text field in admin edit
+area, where he will input a value between 0 and 5.
